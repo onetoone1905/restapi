@@ -57,18 +57,20 @@ Submit your SQL statements and let SQLdep compute metadata.
             ],
             "queries" : [
                 {
-                    "id": 1,                                // Required; must be unique across all queries
-                    "sourceCode": "select * from query1",   // Required; a) must be valid SQL command without futher editing
-                                                            //           b) must contain one or more valid SQL commands
-                                                            //           c) multi-line formating is allowed
+                    "id": 1,                                 // Required; must be unique across all queries
+                    "databaseName": "database_name"         // Required; name of the database the query is running on
+                    "sourceCode": "select * from table1"   // Required; a) must be valid SQL command without futher editing
+                                                             //           b) must contain one or more valid SQL commands
+                                                             //           c) multi-line formating is allowed
                     "processStatusCode": "READY",           // Optional; when empty READY will be used
-                    "name": "",                             // Optional; for visualization purposes - use your internal name if available
-                    "groupName": "",                        // Optional; for visualization purposes - use your internal name if available
-                    "executionUser": ""                     // Optional; When empty DEFAULT will be used
+                    "name": "",                              // Optional; for visualization purposes - use your internal name if available
+                    "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
+                    "executionUser": ""                      // Optional; When empty DEFAULT will be used
                 },
                 {
-                    "id" : 2,                               
-                    "sourceCode": "select * from query2"
+                    "id" : 2,
+                    "databaseName": "database_name"
+                    "sourceCode": "select * from table2"
                     ...
                 },
                 ...
