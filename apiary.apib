@@ -17,6 +17,44 @@ Submit your SQL statements and let SQLdep compute metadata.
             "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
             "dialect": "oracle",                            // Required; options: oracle/postgres/mssql/redshift
             "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
+            "databasePhysicalModel" : [                     // Optional; recommended way how to submit physical model from database catalog
+                {
+                    "tables:" : [                           // Definitions for tables/views
+                        {
+                            "dbName": "database_name",          // Database where the table/view resides in
+                            "objectType": "table",              // Is this definition for table or view
+                            "tableOwner": "owner_name",         // Name of the owner for the table/View 
+                            "tableName": "table_name",         // Table/view name
+                            "columnName": "column_name"         // Name of the column
+                            "columnPosition": 1                 // Column position within the table/view
+                            "columnDataTyṕe": "column_datatype" // Column datatype
+                            "columnComment": "column_comment"   // Column comment if available
+                        },
+                        {
+                            "dbName": "database_name",
+                            "objectType": "table",
+                            "tableOwner": "owner_name",
+                            "tableName": "table_name",
+                            "columnName": "column_name",
+                            "columnPosition": 2,
+                            "columnDataTyṕe": "column_datatype",
+                            "columnComment": "column_comment"
+                        },
+                        ...
+                    ],
+                    "synonyms" : [                              // Optional; skip if you do not use any synonyms
+                        {
+                            "dbName": "database_name",          // Database name where the synonyms resides in
+                            "synonymOwner": "synonym_owner",    // Name of the synonym owner
+                            "synonymName": "synonym_name",      // Synonym name
+                            "sourceTableOwner": "owner_name",   // Name of the owner for source table/view
+                            "sourceTableName": "table_name",    // Table/view name
+                            "sourceTableDbLinkName": "db_link_name"   // Database link for source table/view
+                        },
+                        ...
+                    ]
+                }    
+            ],
             "queries" : [
                 {
                     "id": 1,                                // Required; must be unique across all queries
