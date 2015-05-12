@@ -14,19 +14,19 @@ Submit your SQL statements and let SQLdep compute metadata.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "dialect": "oracle",                            // Required; options: oracle/postgres/mssql/redshift
-            "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "dialect": "oracle",                            // * Required; options: oracle/postgres/mssql/redshift/..
+            "customSqlSetName": "",                         // * Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
             "queries" : [
                 {
-                    "id": 1,                                 // Required; must be unique across all queries
-                    "sourceCode": "select * from table1"     // Required; a) must be valid SQL command without futher editing
-                                                             //           b) must contain one or more valid SQL commands
-                                                             //           c) multi-line formating is allowed
-                    "processStatusCode": "READY",            // Optional; when empty READY will be used
-                    "name": "",                              // Optional; for visualization purposes - use your internal name if available
-                    "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
-                    "executionUser": ""                      // Optional; When empty DEFAULT will be used
+                    "id": 1,                                 // * Required; must be unique across all queries
+                    "sourceCode": "select * from table1"     // * Required; a) must be valid SQL command without futher editing
+                                                             //             b) must contain one or more valid SQL commands
+                                                             //             c) multi-line formating is allowed
+                    "processStatusCode": "READY",            // * Optional; when empty READY will be used
+                    "name": "",                              // * Optional; for visualization purposes - use your internal name if available
+                    "groupName": "",                         // * Optional; for visualization purposes - use your internal name if available
+                    "executionUser": ""                      // * Optional; When empty DEFAULT will be used
                 },
                 {
                     "id" : 2,
@@ -35,26 +35,26 @@ Submit your SQL statements and let SQLdep compute metadata.
                 },
                 ...
             ],
-            "databaseModel" : {                                                 // Optional; you can leave this section completely empty
+            "databaseModel" : {                                                 // * Optional; you can omit this section completely
                 "databases" : [                                                 
                     {
-                        "name": "LIVE",                                         // Required; name of the database
+                        "name": "LIVE",                                         // * Required; name of the database
                         "tables": [
                             {
-                                "isView": false,                                // Optional; truthy => virtual table, falsy => real table
-                                "owner": "ETL_OWNER",                           // Required; name of the owner for the table/view 
-                                "name": "ACCOUNTS",                             // Required; name of the table/view
+                                "isView": false,                                // * Optional; true => view, otherwise => table
+                                "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view 
+                                "name": "ACCOUNTS",                             // * Required; name of the table/view
                                 "columns": [
                                     {
-                                        "name": "ACC_ID",                       // Required; name of the column
-                                        "position": 1,                          // Optional; column position within the table/view
-                                        "dataTyṕe": "NUMBER(10)",               // Optional; column data type
-                                        "comment": "Unique account identifier"  // Optional; column comment if available
+                                        "name": "ACC_ID",                       // * Required; name of the column
+                                        "position": 1,                          // * Optional; column position within the table/view
+                                        "dataType": "NUMBER(10)",               // * Optional; column data type
+                                        "comment": "Unique account identifier"  // * Optional; column comment if available
                                     },
                                     {
                                         "name": "ACC_OPEN_DATE",
                                         "position": 2,
-                                        "dataTyṕe": "DATE",
+                                        "dataType": "DATE",
                                         "comment": "Date when the account was open"
                                     },
                                     ...
@@ -62,13 +62,13 @@ Submit your SQL statements and let SQLdep compute metadata.
                             },
                             ...
                         ],
-                        "synonyms" : [                          // Optional; skip if you do not use any synonyms
+                        "synonyms" : [                          // * Optional; omit this or leave it empty if you do not use any synonyms
                             {
-                                "owner": "DW_OWNER",            // Required; Name of the synonym owner
-                                "name": "ACCOUNTS",             // Required; Synonym name
-                                "sourceOwner": "ETL_OWNER",     // Required; Name of the owner for source table/view
-                                "sourceName": "ACCOUNTS",       // Required; Table/view name
-                                "sourceDbLinkName": ""          // Optional; Database link for source table/view
+                                "schema": "DW_SCHEMA",          // * Required; Name of the synonym schema
+                                "name": "ACCOUNTS",             // * Required; Synonym name
+                                "sourceSchema": "ETL_SCHEMA",   // * Required; Name of the schema for source table/view
+                                "sourceName": "ACCOUNTS",       // * Required; Table/view name
+                                "sourceDbLinkName": ""          // * Optional; Database link for source table/view
                             },
                             ...
                         ]
@@ -111,8 +111,8 @@ List of database schemas.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "sqlSet": "dsrscsg"                             // Required; name of the sqlset
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "sqlSet": "dsrscsg"                             // * Required; name of the sqlset
         }
 
 + Response 200 (application/json)
@@ -142,8 +142,8 @@ List of tables and views.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "sqlSet": "dsrscsg"                             // Required; name of the sqlset
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "sqlSet": "dsrscsg"                             // * Required; name of the sqlset
         }
 
 + Response 200 (application/json)
@@ -173,8 +173,8 @@ List of columns for each table/view.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "sqlSet": "dsrscsg"                             // Required; name of the sqlset
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "sqlSet": "dsrscsg"                             // * Required; name of the sqlset
         }
 
 + Response 200 (application/json)
@@ -208,8 +208,8 @@ Parent vs child relations between columns.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "sqlSet": "dsrscsg"                             // Required; name of the sqlset
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "sqlSet": "dsrscsg"                             // * Required; name of the sqlset
         }
 
 + Response 200 (application/json)
@@ -239,8 +239,8 @@ Parent vs child relations between tables.
 + Request (application/json)
 
         {
-            "userAccountId": "df4ge57s87fs",                // Required; will be provided to you by SQLdep team
-            "sqlSet": "dsrscsg"                             // Required; name of the sqlset
+            "userAccountId": "df4ge57s87fs",                // * Required; will be provided to you by SQLdep team
+            "sqlSet": "dsrscsg"                             // * Required; name of the sqlset
         }
 
 + Response 200 (application/json)
