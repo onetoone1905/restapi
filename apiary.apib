@@ -15,7 +15,7 @@ Submit your SQL statements and let SQLdep compute metadata.
 
         {
             "userAccountId": "7f3e205e-34c9-4791-a343-83988b230d0e",                // * Required; will be provided to you by SQLdep team
-            "dialect": "oracle",                            // * Required; options: oracle/postgres/mssql/redshift/..
+            "dialect": "oracle",                            // * Required; options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
             "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
             "queries" : [
                 {
@@ -78,24 +78,19 @@ Submit your SQL statements and let SQLdep compute metadata.
 + Response 200 (application/json)
 
         {
-            "success": true,
-            "message": "",                                  // Detailed error message. Empty for success response
-            "sqlSetName": "6C2D8652",
-            "urlToVisualisation": "http://www.sqldep.com/sqlset-6C2D8652",
-            "queries": [{
-                "id": 1,
-                "processStatusCode": "DONE"
-                "processStatusDesc": ""                     
-            }, {
-                "id": 2,
-                "processStatusCode": "DONE"
-                "processStatusDesc": ""
-            }]
+            "customSqlSetName": null,
+            "urlToVisualisation": "https://prod.sqldep.com/browser/batch/20150904T120351.321744/",
+            "message": null,                                // Detailed error message. Empty for success response
+            "success": true
         }
         
-+ Response 500 (application/json)
++ Response 400 (application/json)
 
         {
             "success": false,
-            "message": "Error description"
+            "message": {
+                "userAccountId": [
+                    "This field may not be null."
+                ]
+            }
         }
