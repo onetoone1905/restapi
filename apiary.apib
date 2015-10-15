@@ -41,11 +41,11 @@ Submit your SQL statements and let SQLdep compute metadata.
                         "name": "LIVE",                                         // * Required; name of the database, avoid using duplicate names (only the first occurrence is going to be processed)
                         "tables": [
                             {
-                                "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view 
+                                "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view
                                 "name": "ACCOUNTS",                             // * Required; name of the table/view, avoid using duplicate names (only the first occurrence is going to be processed)
                                 "isView": false,                                // Optional; true => view, otherwise => table
                                 "columns": [                                    // Columns are processed sequentially, provide them in the same order as in your table/view
-                                    {                                           
+                                    {
                                         "name": "ACC_ID",                       // * Required; name of the column, avoid using duplicate names (only the first occurrence is going to be processed)
                                         "dataType": "NUMBER(10)",               // Optional; column data type
                                         "comment": "Unique account identifier"  // Optional; column comment if available
@@ -83,7 +83,7 @@ Submit your SQL statements and let SQLdep compute metadata.
             "message": null,                                // Detailed error message. Empty for success response
             "success": true
         }
-        
+
 + Response 400 (application/json)
 
         {
