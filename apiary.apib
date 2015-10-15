@@ -20,7 +20,7 @@ Submit your SQL statements and let SQLdep compute metadata.
             "queries" : [
                 {
                     "id": 1,                                 // * Required; must be unique across all queries. To be deprecated.
-                    "sourceCode": "select * from table1"     // * Required; a) must be valid SQL command without futher editing
+                    "sourceCode": "select * from table1",    // * Required; a) must be valid SQL command without futher editing
                                                              //             b) must contain one or more valid SQL commands
                                                              //             c) multi-line formating is allowed
                     "processStatusCode": "READY",            // Optional; when empty READY will be used
@@ -30,7 +30,7 @@ Submit your SQL statements and let SQLdep compute metadata.
                 },
                 {
                     "id" : 2,
-                    "sourceCode": "select * from table2"
+                    "sourceCode": "select * from table2",
                     ...
                 },
                 ...
