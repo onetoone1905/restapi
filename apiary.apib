@@ -19,17 +19,14 @@ Submit your SQL statements and let SQLdep compute metadata.
             "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
             "queries" : [
                 {
-                    "id": 1,                                 // * Required; must be unique across all queries. To be deprecated.
                     "sourceCode": "select * from table1",    // * Required; a) must be valid SQL command without futher editing
                                                              //             b) must contain one or more valid SQL commands
                                                              //             c) multi-line formating is allowed
-                    "processStatusCode": "READY",            // Optional; when empty READY will be used
                     "name": "",                              // Optional; for visualization purposes - use your internal name if available
                     "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
                     "executionUser": ""                      // Optional; When empty DEFAULT will be used
                 },
                 {
-                    "id" : 2,
                     "sourceCode": "select * from table2",
                     ...
                 },
@@ -64,8 +61,8 @@ Submit your SQL statements and let SQLdep compute metadata.
                             {
                                 "schema": "DW_SCHEMA",          // * Required; Name of the synonym schema
                                 "name": "ACCOUNTS",             // * Required; Synonym name, avoid using duplicate names (only the first occurrence is going to be processed)
-                                "sourceSchema": "ETL_SCHEMA",   // * Required; Name of the schema for source table/view
                                 "sourceName": "ACCOUNTS",       // * Required; Table/view name
+                                "sourceSchema": "ETL_SCHEMA",   // Optional; Name of the schema for source table/view
                                 "sourceDbLinkName": ""          // Optional; Database link for source table/view
                             },
                             ...
