@@ -15,6 +15,67 @@ Submit your SQL statements and let SQLdep compute metadata.
 
     + Attributes (Input)
 
+    + Body
+
+        {
+            "userAccountId": "7f3e205e-34c9-4791-a343-83988b230d0e",                // * Required; will be provided to you by SQLdep team
+            "dialect": "oracle",                            // * Required; options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
+            "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
+            "queries" : [
+                {
+                    "sourceCode": "select * from table1",    // * Required; a) must be valid SQL command without futher editing
+                                                             //             b) must contain one or more valid SQL commands
+                                                             //             c) multi-line formating is allowed
+                    "name": "",                              // Optional; for visualization purposes - use your internal name if available
+                    "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
+                    "executionUser": ""                      // Optional; When empty DEFAULT will be used
+                },
+                {
+                    "sourceCode": "select * from table2",
+                    ...
+                },
+                ...
+            ],
+            "databaseModel" : {                                                 // Optional; you can omit this section completely
+                "databases" : [
+                    {
+                        "name": "LIVE",                                         // * Required; name of the database, avoid using duplicate names (only the first occurrence is going to be processed)
+                        "tables": [
+                            {
+                                "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view
+                                "name": "ACCOUNTS",                             // * Required; name of the table/view, avoid using duplicate names (only the first occurrence is going to be processed)
+                                "isView": false,                                // Optional; true => view, otherwise => table
+                                "columns": [                                    // Columns are processed sequentially, provide them in the same order as in your table/view
+                                    {
+                                        "name": "ACC_ID",                       // * Required; name of the column, avoid using duplicate names (only the first occurrence is going to be processed)
+                                        "dataType": "NUMBER(10)",               // Optional; column data type
+                                        "comment": "Unique account identifier"  // Optional; column comment if available
+                                    },
+                                    {
+                                        "name": "ACC_OPEN_DATE",
+                                        "dataType": "DATE",
+                                        "comment": "Date when the account was open"
+                                    },
+                                    ...
+                                ]
+                            },
+                            ...
+                        ],
+                        "synonyms" : [                          // Optional; omit this or leave it empty if you do not use any synonyms
+                            {
+                                "schema": "DW_SCHEMA",          // * Required; Name of the synonym schema
+                                "name": "ACCOUNTS",             // * Required; Synonym name, avoid using duplicate names (only the first occurrence is going to be processed)
+                                "sourceName": "ACCOUNTS",       // * Required; Table/view name
+                                "sourceSchema": "ETL_SCHEMA",   // Optional; Name of the schema for source table/view
+                                "sourceDbLinkName": ""          // Optional; Database link for source table/view
+                            },
+                            ...
+                        ]
+                    }
+                ]
+            }
+        }
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -24,12 +85,32 @@ Submit your SQL statements and let SQLdep compute metadata.
         - success: true (boolean, required)
         - message (object, nullable)
 
+    + Body
+
+        {
+            "customSqlSetName": null,
+            "urlToVisualisation": "https://prod.sqldep.com/browser/batch/20150904T120351.321744/",
+            "message": null,                                // Detailed error message. Empty for success response
+            "success": true
+        }
+
 + Response 400 (application/json)
 
     + Attributes (object)
 
         - success: false (boolean, required)
         - message (object, nullable)
+
+    + Body
+
+        {
+            "success": false,
+            "message": {
+                "userAccountId": [
+                    "This field may not be null."
+                ]
+            }
+        }
 
 # Data Structures
 
