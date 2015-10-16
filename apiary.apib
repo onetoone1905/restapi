@@ -28,7 +28,9 @@ Submit your SQL statements and let SQLdep compute metadata.
                                                              //             c) multi-line formating is allowed
                     "name": "",                              // Optional; for visualization purposes - use your internal name if available
                     "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
-                    "executionUser": ""                      // Optional; When empty DEFAULT will be used
+                    "database": "",                          // Optional
+                    "schema": "",                            // Optional
+                    "executionUser": ""                      // Optional; alternative name for the "schema" field
                 },
                 {
                     "sourceCode": "select * from table2",
