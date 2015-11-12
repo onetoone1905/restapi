@@ -164,6 +164,7 @@ Submit your SQL statements and let SQLdep compute metadata.
 - name: LIVE (string, required) - name of the database, avoid using duplicate names (only the first occurrence may be processed)
 - tables (array[Table])
 - synonyms (array[Synonym])
+- dblinks (array[DBLink])
 
 ## Table (object)
 
@@ -185,3 +186,10 @@ Submit your SQL statements and let SQLdep compute metadata.
 - sourceName: ACCOUNTS (string, required) - table/view name
 - sourceSchema: `ETL_SCHEMA` (string, optional) - name of the schema for source table/view
 - sourceDbLinkName (string, optional) - database link for source table/view
+
+## DBLink (object)
+
+- owner : (string, required)
+- name : (string, required)
+- userName : (string, required)
+- host : (string, required)
