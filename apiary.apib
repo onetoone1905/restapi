@@ -72,19 +72,19 @@ Submit your SQL statements and let SQLdep compute metadata.
                                 "sourceDbLinkName": ""          // Optional; Database link for source table/view
                             },
                             ...
-                        ],
-                        "dblinks" : [                            // Optional; links to other databases
-                            {
-                                "owner" : "",
-                                "name" : "",
-                                "userName" : "",
-                                "host" : ""
-                            },
-                            ...
                         ]
                     }
                 ]
-            }
+            },
+			"dblinks" : [                            // Optional; links to other databases
+				{
+					"owner" : "",
+					"name" : "",
+					"userName" : "",
+					"host" : ""
+				},
+				...
+			]
         }
 
 + Response 200 (application/json)
@@ -140,6 +140,7 @@ Submit your SQL statements and let SQLdep compute metadata.
 - customSqlSetName (string, optional) - when empty hash value will be generated; allowed characters `[a-Z0-9_]`
 - queries (array[Query], required)
 - databaseModel (DatabaseModel, optional)
+- dblinks (array[DBLink])
 
 ## Query (object)
 
@@ -164,7 +165,6 @@ Submit your SQL statements and let SQLdep compute metadata.
 - name: LIVE (string, required) - name of the database, avoid using duplicate names (only the first occurrence may be processed)
 - tables (array[Table])
 - synonyms (array[Synonym])
-- dblinks (array[DBLink])
 
 ## Table (object)
 
