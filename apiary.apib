@@ -1,11 +1,11 @@
 FORMAT: 1A
-HOST: https://sqldep.com/api/rest
+HOST: https://sqldep.com/
 
 # SQLdep API
 
 # Group Create SQL set
 
-## /sqlset/create/
+## /api/rest/sqlset/create/
 
 ### POST
 
@@ -76,15 +76,15 @@ Submit your SQL statements and let SQLdep compute metadata.
                     }
                 ]
             },
-			"dblinks" : [                            // Optional; links to other databases
-				{
-					"owner" : "",
-					"name" : "",
-					"userName" : "",
-					"host" : ""
-				},
-				...
-			]
+            "dblinks" : [                            // Optional; links to other databases
+                {
+                    "owner" : "",
+                    "name" : "",
+                    "userName" : "",
+                    "host" : ""
+                },
+                ...
+            ]
         }
 
 + Response 200 (application/json)
@@ -122,6 +122,368 @@ Submit your SQL statements and let SQLdep compute metadata.
                 ]
             }
         }
+
+
+
+## /api/batch/
+
+### POST
+
+Submit your SQL statements and let SQLdep compute metadata. With headers authentication
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+    + Body
+
+        {
+            "dialect": "oracle",                            // * Required; options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
+            "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
+            "queries" : [
+                {
+                    "sourceCode": "select * from table1",    // * Required; a) must be valid SQL command without futher editing
+                                                             //             b) must contain one or more valid SQL commands
+                                                             //             c) multi-line formating is allowed
+                    "name": "",                              // Optional; for visualization purposes - use your internal name if available
+                    "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
+                    "database": "",                          // Optional
+                    "schema": "",                            // Optional
+                    "executionUser": ""                      // Optional; alternative name for the "schema" field
+                },
+                {
+                    "sourceCode": "select * from table2",
+                    ...
+                },
+                ...
+            ],
+            "databaseModel" : {                                                 // Optional; you can omit this section completely
+                "databases" : [
+                    {
+                        "name": "LIVE",                                         // * Required; name of the database, avoid using duplicate names (only the first occurrence is going to be processed)
+                        "tables": [
+                            {
+                                "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view
+                                "name": "ACCOUNTS",                             // * Required; name of the table/view, avoid using duplicate names (only the first occurrence is going to be processed)
+                                "isView": false,                                // Optional; true => view, otherwise => table
+                                "columns": [                                    // Columns are processed sequentially, provide them in the same order as in your table/view
+                                    {
+                                        "name": "ACC_ID",                       // * Required; name of the column, avoid using duplicate names (only the first occurrence is going to be processed)
+                                        "dataType": "NUMBER(10)",               // Optional; column data type
+                                        "comment": "Unique account identifier"  // Optional; column comment if available
+                                    },
+                                    {
+                                        "name": "ACC_OPEN_DATE",
+                                        "dataType": "DATE",
+                                        "comment": "Date when the account was open"
+                                    },
+                                    ...
+                                ]
+                            },
+                            ...
+                        ],
+                        "synonyms" : [                          // Optional; omit this or leave it empty if you do not use any synonyms
+                            {
+                                "schema": "DW_SCHEMA",          // * Required; Name of the synonym schema
+                                "name": "ACCOUNTS",             // * Required; Synonym name, avoid using duplicate names (only the first occurrence is going to be processed)
+                                "sourceName": "ACCOUNTS",       // * Required; Table/view name
+                                "sourceSchema": "ETL_SCHEMA",   // Optional; Name of the schema for source table/view
+                                "sourceDbLinkName": ""          // Optional; Database link for source table/view
+                            },
+                            ...
+                        ],
+                        "dblinks" : [                            // Optional; links to other databases
+                            {
+                                "owner" : "",
+                                "name" : "",
+                                "userName" : "",
+                                "host" : ""
+                            },
+                            ...
+                        ]
+                    }
+                ]
+            }
+        }
+
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "dialect": "oracle",                            
+            "queries" : [
+                {
+                    "sourceCode": "select * from table1",    
+                                                             
+                                                             
+                    "name": "",                              
+                    "groupName": "",                         
+                    "database": "",                          
+                    "schema": "",                            
+                    "executionUser": ""                      
+                },
+                {
+                    "sourceCode": "select * from table2",
+                    ...
+                },
+                ...
+            ],
+        }
+
++ Response 400 (application/json)
+
+    + Body
+
+        {
+            "dialect": ["This field is required."],
+            ...
+        }
+
+
+# Batch objects
+
+## /api/batch/<batch_slug>/objects/
+
+### GET
+
+Get batch objects in tree structure.
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {
+        "slug": "20151125T091111.087087",
+        "title": "Demo visualization",
+        "objects": {
+            "databases": [{
+                "name": "DEMO",
+                "schemas": [{
+                    "tables": [{
+                        "name": "IN.ARTICLE_OVERVIEWOPTIONS",
+                        "columns": [{
+                            "name": "CUST_APPLICATION_ID"
+                        }, {
+                            "name": "INSIGHT_OPTION_ID"
+                        }]
+                    }, {
+                        "name": "IN.COMPONENTS",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "SYSTEM_ID"
+                        }, {
+                            "name": "FOUNDER_NAME"
+                        }]
+                    }, {
+                        "name": "IN.CONTENTPOST_PAIRS",
+                        "columns": [{
+                            "name": "VALUE"
+                        }, {
+                            "name": "CUST_APPLICATION_ID"
+                        }, {
+                            "name": "NAME"
+                        }]
+                    }, {
+                        "name": "IN.EVENT",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "CUST_APPLICATION_ID"
+                        }, {
+                            "name": "USER_ID"
+                        }]
+                    }, {
+                        "name": "IN.OVERVIEWOPTION",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "CUSTOMER_CONSOLIDATED_ID"
+                        }]
+                    }, {
+                        "name": "IN.REJECTIONREASON",
+                        "columns": [{
+                            "name": "ID"
+                        }]
+                    }, {
+                        "name": "IN.SYSTEM",
+                        "columns": [{
+                            "name": "CUSTOMER_CONSOLIDATED_ID"
+                        }, {
+                            "name": "ID"
+                        }]
+                    }],
+                    "name": "INBOUND"
+                }, {
+                    "tables": [{
+                        "name": "OUT.CONVERSATION",
+                        "columns": [{
+                            "name": "ID"
+                        }]
+                    }, {
+                        "name": "OUT.FORMS_VALUES",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "CUSTOMER_OBJECT_ID"
+                        }, {
+                            "name": "CUSTOMERID"
+                        }]
+                    }, {
+                        "name": "OUT.FOUNDER",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "NAME"
+                        }, {
+                            "name": "CUSTOMERID"
+                        }]
+                    }, {
+                        "name": "OUT.OBJECTS",
+                        "columns": [{
+                            "name": "ID"
+                        }, {
+                            "name": "CONVERSATION_ID"
+                        }, {
+                            "name": "CONS_ID"
+                        }, {
+                            "name": "ARTICLE_FULL_URL"
+                        }]
+                    }, {
+                        "name": "SQLDEP-CONSTANT",
+                        "columns": [{
+                            "name": "SQLDEP-CONSTANT"
+                        }, {
+                            "name": "SQLDEP-CONSTANT"
+                        }, {
+                            "name": "SQLDEP-CONSTANT"
+                        }]
+                    }],
+                    "name": "OUT"
+                }]
+            }]
+        }
+    }
+
+
+# Compare batches
+
+## /api/batch/compare/
+
+### POST
+
+Compare two SQL codes.
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+    + Body
+
+        [
+            {
+                "dialect": "oracle",                            // * Required; options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
+                "customSqlSetName": "",                         // Optional; when empty hash value will be generated; allowed characters [a-Z0-9_]
+                "queries" : [
+                    {
+                        "sourceCode": "select * from table1",    // * Required; a) must be valid SQL command without futher editing
+                                                                 //             b) must contain one or more valid SQL commands
+                                                                 //             c) multi-line formating is allowed
+                        "name": "",                              // Optional; for visualization purposes - use your internal name if available
+                        "groupName": "",                         // Optional; for visualization purposes - use your internal name if available
+                        "database": "",                          // Optional
+                        "schema": "",                            // Optional
+                        "executionUser": ""                      // Optional; alternative name for the "schema" field
+                    },
+                    {
+                        "sourceCode": "select * from table2",
+                        ...
+                    },
+                    ...
+                ],
+                "databaseModel" : {                                                 // Optional; you can omit this section completely
+                    "databases" : [
+                        {
+                            "name": "LIVE",                                         // * Required; name of the database, avoid using duplicate names (only the first occurrence is going to be processed)
+                            "tables": [
+                                {
+                                    "schema": "ETL_SCHEMA",                         // * Required; name of the schema for the table/view
+                                    "name": "ACCOUNTS",                             // * Required; name of the table/view, avoid using duplicate names (only the first occurrence is going to be processed)
+                                    "isView": false,                                // Optional; true => view, otherwise => table
+                                    "columns": [                                    // Columns are processed sequentially, provide them in the same order as in your table/view
+                                        {
+                                            "name": "ACC_ID",                       // * Required; name of the column, avoid using duplicate names (only the first occurrence is going to be processed)
+                                            "dataType": "NUMBER(10)",               // Optional; column data type
+                                            "comment": "Unique account identifier"  // Optional; column comment if available
+                                        },
+                                        {
+                                            "name": "ACC_OPEN_DATE",
+                                            "dataType": "DATE",
+                                            "comment": "Date when the account was open"
+                                        },
+                                        ...
+                                    ]
+                                },
+                                ...
+                            ],
+                            "synonyms" : [                          // Optional; omit this or leave it empty if you do not use any synonyms
+                                {
+                                    "schema": "DW_SCHEMA",          // * Required; Name of the synonym schema
+                                    "name": "ACCOUNTS",             // * Required; Synonym name, avoid using duplicate names (only the first occurrence is going to be processed)
+                                    "sourceName": "ACCOUNTS",       // * Required; Table/view name
+                                    "sourceSchema": "ETL_SCHEMA",   // Optional; Name of the schema for source table/view
+                                    "sourceDbLinkName": ""          // Optional; Database link for source table/view
+                                },
+                                ...
+                            ],
+                            "dblinks" : [                            // Optional; links to other databases
+                                {
+                                    "owner" : "",
+                                    "name" : "",
+                                    "userName" : "",
+                                    "host" : ""
+                                },
+                                ...
+                            ]
+                        }
+                    ]
+                }
+            },
+            ...  // limit 2 items
+        ]
+
++ Response 201 (application/json)
+
+    + Body
+        {
+          "compareBatches": {
+            "batches": [
+              {
+                "master": true,
+                "slug": "d06833f6-0b72-4fbc-b5ac-4769ef2dfef7",
+                "urlToVisialisation": "https://localhost:8000/browser/batch/d06833f6-0b72-4fbc-b5ac-4769ef2dfef7/"
+              },
+              {
+                "master": false,
+                "slug": "bf070b76-7e5b-47ca-82ea-1778f3410824",
+                "urlToVisialisation": "https://localhost:8000/browser/batch/bf070b76-7e5b-47ca-82ea-1778f3410824/"
+              }
+            ],
+            "urlToCompareVisualisation": "https://localhost:8000/browser/batch/d06833f6-0b72-4fbc-b5ac-4769ef2dfef7/bf070b76-7e5b-47ca-82ea-1778f3410824/"
+          }
+        }
+
+
 
 # Data Structures
 
