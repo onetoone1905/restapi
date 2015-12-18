@@ -374,6 +374,142 @@ Get batch objects in tree structure.
     }
 
 
+# Batch relations
+
+## /api/batch/<batch_slug>/relations/
+
+### GET
+
+Get count and url of batch relations.
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+    
+    {
+        "slug": "ea042381-5130-467d-8ab2-094c04bdf3ea",
+        "title": "Demo",
+        "relations": {
+            "tables": {
+                "count": 120,
+                "url": "https://dev-jessie.sqldep.com/api/batch/ea042381-5130-467d-8ab2-094c04bdf3ea/relations/columns/"
+            },
+            "columns": {
+                "count": 3000,
+                "url": "https://dev-jessie.sqldep.com/api/batch/ea042381-5130-467d-8ab2-094c04bdf3ea/relations/tables/"
+            }
+        }
+    }
+
+
+# Batch tables relations
+
+## /api/batch/<batch_slug>/relations/tables/
+
+### GET
+
+Get list of batch tables relations.
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {
+        "slug": "ea042381-5130-467d-8ab2-094c04bdf3ea",
+        "title": "Demo",
+        "relations": [{
+            "source": {
+                "table": "BRIDGE.OBJECTS",
+                "schema": "PUBLIC",
+                "database": "DEFAULT"
+            },
+            "type": null,
+            "id": 1,
+            "target": {
+                "table": "NEGTIVES",
+                "schema": "PUBLIC_NEW",
+                "database": "DEFAULT"
+            }
+        }, {
+            "source": {
+                "table": "TOTALS",
+                "schema": "PUBLIC",
+                "database": "DEFAULT"
+            },
+            "type": null,
+            "id": 2,
+            "target": {
+                "table": "PUBLIC.MOOD",
+                "schema": "PUBLIC",
+                "database": "DEFAULT"
+            }
+        }]
+    }
+
+
+
+# Batch columns relations
+
+## /api/batch/<batch_slug>/relations/columns/
+
+### GET
+
+Get list of batch columns relations.
+
++ Request (application/json)
+
+    + Headers
+
+        Authentication: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {
+        "slug": "ea042381-5130-467d-8ab2-094c04bdf3ea",
+        "title": "Demo",
+        "relations": [{
+            "source": {
+                "column": "CONS_ID",
+                "table": "BRIDGE.OBJECTS",
+                "schema": "PUBLIC",
+                "database": "DEFAULT"
+            },
+            "type": null,
+            "id": 1,
+            "target": {
+                "column": "CONS_ID",
+                "table": "NEGTIVES",
+                "schema": "PUBLIC_NEW",
+                "database": "DEFAULT"
+            }
+        }, {
+            "source": {
+                "column": "ID",
+                "table": "BRIDGE.OBJECTS",
+                "schema": "PUBLIC",
+                "database": "DEFAULT"
+            },
+            "type": null,
+            "id": 2,
+            "target": {
+                "column": "NEGTIVES",
+                "table": "NEGTIVES",
+                "schema": "PUBLIC_NEW",
+                "database": "DEFAULT"
+            }
+        }]
+    }
+
+
+
 # Compare batches
 
 ## /api/batch/compare/
