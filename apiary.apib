@@ -3,7 +3,7 @@ HOST: https://sqldep.com/
 
 # SQLdep API
 
-# Group Create SQL set
+# Group QueryFlow
 
 ## /api/rest/sqlset/create/
 
@@ -31,7 +31,40 @@ Submit your SQL statements and let SQLdep compute metadata.
                     "database": "",                          // Optional
                     "schema": "",                            // Optional
                     "executionUser": ""                      // Optional; alternative name for the "schema" field
+                    }        // Use for searching for object according to its sql code position.
+            // Best performance can be achieved for nicely formated sql code
+            // (e.g. each selected column on seperate line).
+                "columns": {
+                    // Array of lines of column positions. The first line
+                    // in sql source code is first in the array, second
+                    // line is second and so on.
+                    // The column positions on their line are sorted to
+                    // ensure source column always precedes its alias and
+                    // artificial columns like WHERE are always put last.
+                    "lines": [[{
+                        "id"   : ColumnId, // Id of a column at the position
+                        "start": Number,   // Start character position inclusive
+                        "end"  : Number    // End character position exclusive.
+                                         // High number is used to indicate
+                                         // end of line
+                    }]]
                 },
+                "tables": {
+                    // Array of lines of table positions. Contains sub-selects
+                    // too. The first line in sql source code is first in the
+                    // array, second line is second and so on. Multi-line
+                    // elements thus occurs on multiple times in the array.
+                    // The table positions on their line are sorted to
+                    // ensure nested table precedes enclosing table.
+                    "lines": [[{
+                        "id"   : TableId, // Id of a table at the position
+                        "start": Number,  // Start character position inclusive
+                        "end"  : Number   // End character position exclusive.
+                                        // High number is used to indicate
+                                        // end of line
+                    }]]
+                }
+,
                 {
                     "sourceCode": "select * from table2",
                     ...
@@ -691,3 +724,213 @@ Compare two SQL codes.
 - name : (string, required)
 - userName : (string, required)
 - host : (string, required)
+
+# Group QueryScope
+
+## /api/qs/batch/
+
+### POST
+
+Create a new batch.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+    + Body
+
+        {
+            "dialect": "oracle", // * Required; options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
+            "query"  : "select * from table1" // * Required
+        }
+
+
++ Response 201 (application/json)
+
+    + Headers
+    
+        Location: <link_to_the_created_batch> // see GET /api/qs/batch/<batch_slug>/
+        
+    + Body
+    
+        {
+            "visualization": String // link to visualization of the created batch
+        }
+
+## /api/qs/batch/<batch_slug>/
+
+### GET
+
+Retrieve the created batch.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "columns": { // see GET /api/qs/batch/<batch_slug>/columns/ },
+            "tables" : { // see GET /api/qs/batch/<batch_slug>/tables/  },
+            "positions_map": {
+            // Use for searching for object according to its sql code position.
+            // Best performance can be achieved for nicely formated sql code
+            // (e.g. each selected column on seperate line).
+                "columns": {
+                    // Array of lines of column positions. The first line
+                    // in sql source code is first in the array, second
+                    // line is second and so on.
+                    // The column positions on their line are sorted to
+                    // ensure source column always precedes its alias and
+                    // artificial columns like WHERE are always put last.
+                    "lines": [[{
+                        "id"   : ColumnId, // Id of a column at the position
+                        "start": Number,   // Start character position inclusive
+                        "end"  : Number    // End character position exclusive.
+                                           // Starts from 1. High number is used
+                                           // to indicate end of line
+                    }]]
+                },
+                "tables": {
+                    // Array of lines of table positions. Contains sub-selects
+                    // too. The first line in sql source code is first in the
+                    // array, second line is second and so on. Multi-line
+                    // elements thus occurs on multiple times in the array.
+                    // The table positions on their line are sorted to
+                    // ensure nested table precedes enclosing table.
+                    "lines": [[{
+                        "id"   : TableId, // Id of a table at the position
+                        "start": Number,  // Start character position inclusive
+                        "end"  : Number   // End character position exclusive.
+                                          // Starts from 1. High number is used
+                                          // to indicate end of line
+                    }]]
+                }
+            }
+        }
+
++ Response 202 (application/json)
+
+    + Body
+        {
+            // empty body, the batch not ready yet, try again later
+        }
+
+## /api/qs/batch/<batch_slug>/columns/
+
+### GET
+
+Retrieve all columns of the created batch.
+NOTE: the url not active yet
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            <column_id>: {
+                "id"       : Number,       // Column id
+                "name"     : String,       // Column name
+                "table"    : TableId,      // Parent table id 
+                "positions": [Position],   // Array of positions of the
+                                           // column in sql code; see
+                                           // legend below
+                "inputs"   : { // Input data flow relations
+                    <data_flow_relation_type>: [{   // see legend below
+                        "column": ColumnId,         // Source column id
+                        "id"    : ColumnRelationId, // Column relation id 
+                    }]
+                    ...
+                },
+                "outputs"  : { // Output data flow relations
+                    <data_flow_relation_type>: [{
+                        "column": ColumnId,         // Target column id
+                        "id"    : ColumnRelationId, // Column relation id 
+                    }]
+                    ...
+                }
+                "joins"    : [{ // Join relations
+                    "column": ColumnId,         // Joined column id
+                    "id"    : ColumnRelationId, // Column relation id 
+                }]
+            },
+            ...
+        }
+        
+// Position: [[<start_line>, <start_char>], [<end_line>, <end_char>]]
+//      - <start_line> - position of start line inclusive
+//      - <start_char> - position of start character inclusive
+//      - <end_line>   - position of end line inclusive
+//      - <end_char>   - position of end character exclusive
+//      - the positions start from 1
+//      
+// Data flow relation types legend:
+//      DFCVT       - relation between two columns
+//      DFCVTCONST  - relation between constant and column
+//      DFCVTINDIR  - relation between column and artificial
+//                    column like WHERE
+
++ Response 202 (application/json)
+
+    + Body
+        {
+            // empty body, the batch not ready yet, try again later
+        }
+
+## /api/qs/batch/<batch_slug>/tables/
+
+### GET
+
+Retrieve all tables of the created batch.
+NOTE: the url not active yet
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            <table_id>: {
+                "id"       : Number,     // Table id
+                "name"     : String,     // Table name
+                "columns"  : [ColumnId], // Sorted array of column ids
+                "positions": [Position],   // Array of positions of the
+                                           // table in sql code; see
+                                           // legend below
+            },
+            ...
+        }
+
+// Position: [[<start_line>, <start_char>], [<end_line>, <end_char>]]
+//      - <start_line> - position of start line inclusive
+//      - <start_char> - position of start character inclusive
+//      - <end_line>   - position of end line inclusive
+//      - <end_char>   - position of end character exclusive
+//      - the positions start from 1
+
++ Response 202 (application/json)
+
+    + Body
+        {
+            // empty body, the batch not ready yet, try again later
+        }
