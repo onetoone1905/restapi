@@ -233,24 +233,8 @@ Submit your SQL statements and let SQLdep compute metadata. With headers authent
     + Body
 
         {
-            "dialect": "oracle",                            
-            "queries" : [
-                {
-                    "sourceCode": "select * from table1",    
-                                                             
-                                                             
-                    "name": "",                              
-                    "groupName": "",                         
-                    "database": "",                          
-                    "schema": "",                            
-                    "executionUser": ""                      
-                },
-                {
-                    "sourceCode": "select * from table2",
-                    ...
-                },
-                ...
-            ],
+            "slug": "some-batch-slug--parameter-for-GETs",                            
+            "urlToVisualisation" : "https://app.sqldep.com/..."
         }
 
 + Response 400 (application/json)
