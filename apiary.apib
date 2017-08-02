@@ -793,3 +793,96 @@ NOTE: the url not active yet
         {
             // empty body, the batch not ready yet, try again later
         }
+
+# Group Data Glossary
+
+## /api/dg/custom_section/
+
+### GET
+
+Get all data glossary's custom section values.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+        {
+            "values": [
+                {
+                    "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
+                    "data": [
+                        {
+                            "key": String, // The key that you defined in the custom section
+                            "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                            "value": String // An arbitrary value attached to the object
+                        },
+                        ...
+                    ]
+                },
+                ...
+            ]
+        }
+
+
+### POST
+
+Submit your custom section values to a data glossary's database identified by a slug.
+This will replace the entire content with the new one.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+    + Body
+
+        {
+            "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
+            "data": [
+                {
+                    "key": String, // The key that you defined in the custom section
+                    "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                    "value": String // An arbitrary value that you want to attach to the object
+                },
+                ...
+            ]
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "rejected_keys": [String] // List of keys that were rejected (key or object_id was missing)
+        }
+
+
+## /api/dg/custom_section/<slug>/
+
+### GET
+
+Get custom section values for a data glossary's database identified by a slug.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+        {
+            "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
+            "data": [
+                {
+                    "key": String, // The key that you defined in the custom section
+                    "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                    "value": String // An arbitrary value attached to the object
+                },
+                ...
+            ]
+        }
