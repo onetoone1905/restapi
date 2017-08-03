@@ -817,7 +817,8 @@ Get all data glossary's custom section values.
                     "data": [
                         {
                             "key": String, // The key that you defined in the custom section
-                            "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                            "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
+                            "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
                             "value": String // An arbitrary value attached to the object
                         },
                         ...
@@ -831,7 +832,7 @@ Get all data glossary's custom section values.
 ### POST
 
 Submit your custom section values to a data glossary's database identified by a slug.
-This will replace the entire content with the new one.
+This will replace the entire content with the new one, i.e. the previous values will be deleted.
 
 + Request (application/json)
 
@@ -846,7 +847,8 @@ This will replace the entire content with the new one.
             "data": [
                 {
                     "key": String, // The key that you defined in the custom section
-                    "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                    "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
+                    "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
                     "value": String // An arbitrary value that you want to attach to the object
                 },
                 ...
@@ -857,7 +859,7 @@ This will replace the entire content with the new one.
 + Response 200 (application/json)
 
         {
-            "rejected_keys": [String] // List of keys that were rejected (key or object_id was missing)
+            "rejected_keys": [String] // List of keys that were rejected (key or object was missing)
         }
 
 
@@ -880,7 +882,8 @@ Get custom section values for a data glossary's database identified by a slug.
             "data": [
                 {
                     "key": String, // The key that you defined in the custom section
-                    "object_id": Int, // An ID of the object (table/procedure/package) to that the value belongs
+                    "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
+                    "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
                     "value": String // An arbitrary value attached to the object
                 },
                 ...
