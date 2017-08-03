@@ -817,8 +817,10 @@ Get all data glossary's custom section values.
                     "data": [
                         {
                             "key": String, // The key that you defined in the custom section
-                            "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
-                            "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
+                            "object_name": String, // A name of the object (table/procedure/package)
+                            "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
+                            "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
+                            "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
                             "value": String // An arbitrary value attached to the object
                         },
                         ...
@@ -847,8 +849,10 @@ This will replace the entire content with the new one, i.e. the previous values 
             "data": [
                 {
                     "key": String, // The key that you defined in the custom section
-                    "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
-                    "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
+                    "object_name": String, // A name of the object (table/procedure/package)
+                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
+                    "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
+                    "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
                     "value": String // An arbitrary value that you want to attach to the object
                 },
                 ...
@@ -882,8 +886,10 @@ Get custom section values for a data glossary's database identified by a slug.
             "data": [
                 {
                     "key": String, // The key that you defined in the custom section
-                    "object_name": String, // An unambiguous identification of the object (table/procedure/package) in form of DATABASE.SCHEMA.NAME
-                    "object_type": String, // one of "T" (as table), "V" (as view), "PROC" (procedure) and "PKG" (package)
+                    "object_name": String, // A name of the object (table/procedure/package)
+                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
+                    "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
+                    "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
                     "value": String // An arbitrary value attached to the object
                 },
                 ...
