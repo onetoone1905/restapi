@@ -798,39 +798,6 @@ NOTE: the url not active yet
 
 ## /api/dg/custom_section/
 
-### GET
-
-Get all data glossary's custom section values.
-
-+ Request (application/json)
-
-    + Headers
-
-        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
-
-+ Response 200 (application/json)
-
-        {
-            "values": [
-                {
-                    "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
-                    "data": [
-                        {
-                            "key": String, // The key that you defined in the custom section
-                            "name": String, // A name of the object (table/procedure/package)
-                            "type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
-                            "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
-                            "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
-                            "value": String // An arbitrary value attached to the object
-                        },
-                        ...
-                    ]
-                },
-                ...
-            ]
-        }
-
-
 ### POST
 
 Submit your custom section values to a data glossary's database identified by a slug.
