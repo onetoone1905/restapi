@@ -247,6 +247,53 @@ Submit your SQL statements and let SQLdep compute metadata. With headers authent
         }
 
 
+### DELETE
+
+Delete batch (specified by the query parameter `batch_slug`) or multiple batches (the other query parameters).
+
++ Parameters
+
+    + batch_slug: `ea042381-5130-467d-8ab2-094c04bdf3ea` (optional) - The slug of a batch that will be deleted.
+    + batch_name: `MyBatch` (optional) - The name (title) of batches that will be deleted.
+    + delete_from: `2017-02-01T00:00:00` (optional, datetime) - The date and time from the batches will be deleted – the creation date and time is greater or equal than this value. (Default: no filtering.)
+    + delete_to: `2017-11-19T14:32:01` (optional, datetime) - The date and time to the batches will be deleted – the creation date and time is lesser or equal than this value. (Default: no filtering.)
+    + is_shared: true (optional, boolean) - Delete only shared or private batches? (Default: delete batches of both kinds.)
+
++ Request
+    At least one of `batch_slug`, `batch_name`, `delete_from`, `delete_to` query parameters needs to be provided.
+
+    Examples of the URLs:
+
+    - `/api/batch/?batch_slug=ea042381-5130-467d-8ab2-094c04bdf3ea`
+    - `/api/batch/?batch_name=MyBatch`
+    - `/api/batch/?delete_from=2017-02-01T00:00:00&is_private=false`
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "deleted_slugs": [ // list of the slugs of deleted batches
+                "ea042381-5130-467d-8ab2-094c04bdf3ea"
+            ]
+        }
+
++ Response 400 (application/json)
+
+    + Body
+
+        {
+            "errors": [
+                "an error message"
+            ],
+            ...
+        }
+
+
 # Batch objects
 
 ## /api/batch/<batch_slug>/objects/
