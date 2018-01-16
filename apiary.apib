@@ -558,6 +558,63 @@ Get list of batch columns relations.
         }]
     }
 
+# Batch status
+
+## /api/batch/<batch_slug>/status/
+
+### GET
+
+Get current status of processing.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {
+        "status": "processed",
+        "queries": [{
+            "id": 1,
+            "status_code": "PARSING_ERROR",
+            "name": "01-parsing_err.sql",
+            "status_desc": "Unable to proceed with syntax parsing at line ..."
+        },{
+            "id": 2,
+            "status_code": "ANALYZE_ERROR",
+            "name": "02-analyze_err.sql",
+            "status_desc": "Unknown table name in ..."
+        }, {
+            "id": 3,
+            "status_code": "DONE",
+            "name": "03-done.sql",
+            "status_desc": "Analysis succeeded, queries 1"
+        }, {
+            "id": 4,
+            "status_code": "PARSING_ERROR",
+            "name": "04-other-syntax-error.sql",
+            "status_desc": "Unable to proceed with syntax parsing at line ..."
+        }],
+        "stats": {
+            "analyze_error": 1,
+            "done": 1,
+            "parsing_error": 2
+        },
+        "slug": "f78563e2-9253-41b3-8144-aa0e41ea882e"
+    }
+
+    {
+        "status": "failed",
+        "message": "fatal failure",
+        "slug": "f78563e2-9253-41b3-8144-aa0e41ea882e"
+    }
+
+    {
+        "status": "running",
+        "slug": "f78563e2-9253-41b3-8144-aa0e41ea882e"
+    }
 
 # Data Structures
 
