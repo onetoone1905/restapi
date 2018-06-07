@@ -286,6 +286,54 @@ Get batch objects in tree structure.
     }
 
 
+# Batch object with column occurrences
+
+## /api/batch/<batch_slug>/objects/occurrences/
+
+### GET
+
+Get batch objects in tree structure with column occurrences. Please note, this end point is ment for experimental purposes only, not for production use.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {   
+        "slug": "20151125T091111.087087",
+        "title": "Demo visualization",
+        "objects": {
+            "databases": [{
+                "name": "DEMO",
+                "schemas": [{
+                    "name": "INBOUND",
+                    "tables": [{
+                        "name": "IN.ARTICLE_OVERVIEWOPTIONS",
+                        "columns": [{
+                            "name": "CUST_APPLICATION_ID",
+                            "occurrences": {
+                                "my-query-1": { // this column creates 1 direct and 2 indirect relations in query `my-query-1`
+                                    "dir": 1,
+                                    "indir": 2
+                                },  
+                                "my-query-2": { // ... and also creates 2 direct only relations in other query `my-query-2`
+                                    "dir": 2
+                                }   
+                            }   
+                        }, {
+                            "name": "INSIGHT_OPTION_ID",
+                            "occurrences": {} // no relations created by this column
+                        }]  
+                    }]  
+                }]  
+            }]  
+        }   
+    }   
+
+
 # Batch relations
 
 ## /api/batch/<batch_slug>/relations/
