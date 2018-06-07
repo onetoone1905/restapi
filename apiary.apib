@@ -315,7 +315,7 @@ Get batch objects in tree structure with column occurrences. Please note, this e
                         "columns": [{
                             "name": "CUST_APPLICATION_ID",
                             "occurrences": {
-                                "my-query-1": { // this column creates 1 direct and 2 indirect relations in query `my-query-1`
+                                "my-query-1": { // this column creates 1 direct and 2 indirect relations in query `my-query-1` (the name is taken from `queries[*].name` - see `POST /api/batch/`)
                                     "dir": 1,
                                     "indir": 2
                                 },  
