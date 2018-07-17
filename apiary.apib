@@ -86,7 +86,24 @@ Submit your SQL statements and let SQLdep compute metadata. With headers authent
                         ]
                     }
                 ]
-            }
+            },
+            "sqldep-dataflows": [                   // Optional; Predefined custom dataflows
+                {
+                    "source": {                     // * Required; Fully-qualified source column of a dataflow
+                        "column": "ACC_ID",         // * Required; Column name
+                        "table": "ACCOUNTS",        // * Required; Table name of the column
+                        "schema": "ETL_SCHEMA",     // * Required; Schema name of the table
+                        "database": "LIVE"          // * Required; Database of the schema
+                    },
+                    "target": {                     // * Required; Fully-qualified target column of a dataflow
+                        "column": "USER_ID",        // * Required; The same as above...
+                        "table": "ACCOUNTS_LOG",    // * Required
+                        "schema": "ETL_SCHEMA",     // * Required
+                        "database": "LIVE"          // * Required
+                    }
+                },
+                ...
+            ]
         }
 
 
