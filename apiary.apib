@@ -898,3 +898,21 @@ Get custom section values for a data glossary's database identified by a slug.
                 ...
             ]
         }
+
+# Group Miscellaneous
+
+## /api/download_binary/
+
+### GET
+
+Download latest SQLdep binary (available for certain clients only).
+
++ Request
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/java-archive)
+
+    The content of the SQLdep binary.
