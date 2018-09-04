@@ -832,71 +832,199 @@ NOTE: the url not active yet
 
 # Group Data Glossary
 
-## /api/dg/custom_section/
+##/api/dg/<glossary_slug>/
+
+### GET
+Get glossary objects in tree structure.
+
++ Request (application/json)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
++ Response 200 (application/json)
+
+    {  
+   "slug":"8d05af7b-ba71-4319-82c8-5192bd8144ab",
+   "title":"Demo vizualization",
+   "objects":{  
+      "databases":[  
+         {  
+            "name":"DEMO DATABASE",
+            "schemas":[  
+               {  
+                  "name":"DEMO SCHEMA",
+                  "tables":[  
+                     {  
+                        "name":"TABLE1",
+                        "object_type":"table",
+                        "tags":[  
+                           "TAG1",
+                           "TAG2"
+                        ],
+                        "custom_section":[  
+                           {  
+                              "key":"CSKEYX",
+                              "value":"This text is assigned to KEY"
+                           }
+                        ],
+                        "table_description":null,
+                        "user_description":"This table need to be redesigned",
+                        "steward":{  
+                           "first_name":"Andrew",
+                           "last_name":"Nowak",
+                           "email":"andre@company.com"
+                        },
+                        "insertion_time":"2018-08-30 08:36:04",
+                        "last_update":"2018-09-02 11:45:21",
+                        "columns":[  
+                           {  
+                              "name":"COL1",
+                              "tags":[  
+                                 "TAG15",
+                                 "CHECKED"
+                              ],
+                              "data_type":"integer",
+                              "table_description":null,
+                              "user_description":"These data uses table X",
+                              "insertion_time":"2018-06-30 15:42:07",
+                              "last_update":"2018-08-15 08:36:04"
+                           },
+                           {  
+                              "name":"COL2",
+                              "tags":[  
+                                 "TAG2"
+                              ],
+                              "data_type":"integer",
+                              "table_description":null,
+                              "user_description":"redesign of this col is urgent",
+                              "insertion_time":"2018-08-30 08:36:04",
+                              "last_update":"2018-08-30 08:36:04"
+                           },
+                           {  
+                              "name":"COL3",
+                              "tags":[  
+                                 "TAG14",
+                                 "TAG45"
+                              ],
+                              "data_type":"string",
+                              "table_description":null,
+                              "user_description":"redesign of this col is urgent",
+                              "insertion_time":"2018-08-30 08:36:04",
+                              "last_update":"2018-08-30 08:36:04"
+                           }
+                        ]
+                     },
+                     {  
+                        "name":"TABLE2",
+                        "object_type":"table",
+                        "tags":[  
+                           "VERIFIED",
+                           "CHECKED"
+                        ],
+                        "custom_section":[  
+                           {  
+                              "key":"INFO",
+                              "value":"Information about table usage"
+                           }
+                        ],
+                        "table_description":null,
+                        "user_description":"Table is ready",
+                        "steward":{  
+                           "first_name":"Paul",
+                           "last_name":"Johnson",
+                           "email":"johson@company.com"
+                        },
+                        "insertion_time":"2018-08-30 08:36:04",
+                        "last_update":"2018-08-30 08:36:04",
+                        "columns":[  
+                           {  
+                              "name":"DATA_COL",
+                              "tags":[  
+                                 "redesign"
+                              ],
+                              "data_type":"string",
+                              "table_description":null,
+                              "user_description":"redesign of this col is urgent",
+                              "insertion_time":"2018-08-30 08:36:04",
+                              "last_update":"2018-08-30 08:36:04"
+                           }
+                        ]
+                     }
+                  ]
+               }
+            ]
+         }
+      ]
+   }
+}
+
+
+## /api/dg/<glossary_slug>/objects/
 
 ### POST
 
-Submit your custom section values to a data glossary's database identified by a slug.
-This will replace the entire content with the new one, i.e. the previous values will be deleted.
-
+Submit custom metadata of objects to the data glossary's database identified by a slug. 
+You can edit text description of object, custom section and tags.
+Every not null property will overwrite previous value.
 + Request (application/json)
-
     + Headers
-
         Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
-
     + Body
-
         {
-            "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
             "data": [
-                {
+                {   "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
+                    "schema": String, // Schema in which the object resides (optional: the default value is "DEFAULT")
+                    "object": String, // A name of the edited object (table/procedure/package)
+                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
+                    "description": String, // Your custom text description of the object
+                    "tags": [
+                    Strings // Tags assigned to the object i.e ["TAG1", "TAG2", ...]
+                    ],
+                    "custom_section": {
                     "key": String, // The key that you defined in the custom section
-                    "name": String, // A name of the object (table/procedure/package)
-                    "type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
-                    "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
-                    "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
                     "value": String // An arbitrary value that you want to attach to the object
+                    }
                 },
                 ...
             ]
         }
-
-
 + Response 200 (application/json)
-
-        {
+        {   
+            'rejected_table': [String], //List of object which were not fount in database thus are unchanged
             "rejected_keys": [String] // List of keys that were rejected (key or object was missing)
         }
+        
+## /api/dg/<glossary_slug>/columns/
 
+### POST
 
-## /api/dg/custom_section/<slug>/
-
-### GET
-
-Get custom section values for a data glossary's database identified by a slug.
-
+Submit custom metadata of columns to the data glossary's database identified by a slug. 
+You can edit text description and tags of column.
+Every not null property will overwrite previous value.
 + Request (application/json)
-
     + Headers
-
         Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
-
-+ Response 200 (application/json)
-
+    + Body
         {
-            "slug": String, // Slug of the data glossary, e.g. "ea042381-5130-467d-8ab2-094c04bdf3ea"
             "data": [
-                {
-                    "key": String, // The key that you defined in the custom section
-                    "name": String, // A name of the object (table/procedure/package)
-                    "type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
-                    "schema": String, // Schema of in which the object resides (optional: the default value is "DEFAULT")
-                    "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
-                    "value": String // An arbitrary value attached to the object
+                {   "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
+                    "schema": String, // Schema in which the object resides (optional: the default value is "DEFAULT")
+                    "object": String, // A name of the object in which is edited column (table/procedure/package)
+                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
+                    "column": String, // A name of the edited column
+                    "description": String, // Your custom text description of the column
+                    "tags": [
+                    Strings // Tags assigned to the column i.e ["TAG1", "TAG2", ...]
+                    ]
                 },
                 ...
             ]
+        }
++ Response 200 (application/json)
+        {   
+            'rejected_columns': [String] //List of columns which were not fount in database thus are unchanged
         }
 
 # Group Miscellaneous
