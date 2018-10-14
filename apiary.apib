@@ -994,8 +994,8 @@ Every not null property will overwrite previous value.
         }
 + Response 200 (application/json)
         {   
-            'rejected_table': [String], //List of object which were not fount in database thus are unchanged
-            "rejected_keys": [String] // List of keys that were rejected (key or object was missing)
+            'rejected_tables': [String], //List of object which were not fount in database thus are unchanged
+            "rejected_cs_keys": [String] // List of keys that were rejected (key or object was missing)
         }
         
 ## /api/dg/<glossary_slug>/columns/
