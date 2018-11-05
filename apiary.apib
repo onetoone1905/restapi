@@ -548,6 +548,45 @@ Get current status of processing.
         "slug": "f78563e2-9253-41b3-8144-aa0e41ea882e"
     }
 
+## /api/batch/zip/
+
+### POST
+
+Submit your SQL statements in a zip archive.
+
++ Request (multipart/form-data)
+
+    + Headers
+
+        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
+
+    + Body
+
+        {
+            "dialect": "oracle",    	// * Required (It is optional when sending only .json files)
+				    	//   options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
+	    "customSqlSetName": "",     // Optional; when empty zip filename will be used; allowed characters [a-Z0-9_]
+        }
+
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "slug": "some-batch-slug--parameter-for-GETs",                            
+            "urlToVisualisation" : "https://app.sqldep.com/..."
+        }
+
++ Response 400 (application/json)
+
+    + Body
+
+        {
+            "errors": ["", ...]
+        }
+
+
 # Data Structures
 
 ## Input (object)
