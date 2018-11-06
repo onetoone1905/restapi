@@ -554,7 +554,18 @@ Get current status of processing.
 
 Submit your SQL statements in a zip archive.
 
-+ Request (multipart/form-data)
++ Request (multipart/form-data; boundary=---BOUNDARY)
+
+        -----BOUNDARY
+        Content-Disposition: form-data; name="zip[file]"; filename="zipfilename.zip"
+        Content-Type: application/zip
+        Content-Transfer-Encoding: base64
+
+        UEsDBAoAAAAAACFhZk37F63BEAAAABAAAAAIABwAdGVzdC5zcWxVVAkAA0124V
+        tNduFbdXgLAAEE6AMAAAToAwAAc2VsZWN0IGEgZnJvbSBiClBLAQIeAwoAAAAA
+        ACFhZk37F63BEAAAABAAAAAIABgAAAAAAAEAAAC0gQAAAAB0ZXN0LnNxbFVUBQ
+        ADTXbhW3V4CwABBOgDAAAE6AMAAFBLBQYAAAAAAQABAE4AAABSAAAAAAA=
+        -----BOUNDARY
 
     + Headers
 
@@ -564,8 +575,8 @@ Submit your SQL statements in a zip archive.
 
         {
             "dialect": "oracle",       // * Required (It is optional when sending only .json files)
-                                       //   options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'tsql', 'postgres'
-            "customSqlSetName": "",    // Optional; when empty zip filename will be used; allowed characters [a-Z0-9_]
+                                       //   options: 'oracle', 'generic', 'redshift', 'teradata', 'vertica', 'mssql', 'psql', 'postgres'
+            "customSqlSetName": ""     // Optional; when empty zip filename will be used; allowed characters [a-Z0-9_]
         }
 
 
