@@ -897,108 +897,116 @@ Download all metadata from Data Glossary.
 
 + Response 200 (application/json)
 
-    {  
+    {
    "slug":"8d05af7b-ba71-4319-82c8-5192bd8144ab",
    "title":"Demo vizualization",
-   "objects":{  
-      "databases":[  
-         {  
+   "objects":{
+      "databases":[
+         {
             "name":"DEMO DATABASE",
-            "schemas":[  
-               {  
+            "schemas":[
+               {
                   "name":"DEMO SCHEMA",
-                  "tables":[  
-                     {  
+                  "tables":[
+                     {
                         "name":"TABLE1",
                         "object_type":"table",
-                        "tags":[  
+                        "tags":[
                            "TAG1",
                            "TAG2"
                         ],
-                        "custom_section":[  
-                           {  
+                        "custom_section":[
+                           {
                               "key":"CSKEYX",
                               "value":"This text is assigned to KEY"
                            }
                         ],
-                        "table_description":null,
-                        "user_description":"This table need to be redesigned",
-                        "steward":{  
+                        "db_desc":null,
+                        "user_desc":"This table need to be redesigned",
+                        "steward":{
                            "first_name":"Andrew",
                            "last_name":"Nowak",
                            "email":"andre@company.com"
                         },
                         "insertion_time":"2018-08-30 08:36:04",
                         "last_update":"2018-09-02 11:45:21",
-                        "columns":[  
-                           {  
+                        "row_count":"24",
+                        "table_size":"4235",
+                        "columns":[
+                           {
                               "name":"COL1",
-                              "tags":[  
+                              "tags":[
                                  "TAG15",
                                  "CHECKED"
                               ],
                               "data_type":"integer",
-                              "column_description":null,
-                              "user_description":"These data uses table X",
+                              "position":"0",
+                              "db_desc":null,
+                              "user_desc":"These data uses table X",
                               "insertion_time":"2018-06-30 15:42:07",
                               "last_update":"2018-08-15 08:36:04"
                            },
-                           {  
+                           {
                               "name":"COL2",
-                              "tags":[  
+                              "tags":[
                                  "TAG2"
                               ],
                               "data_type":"integer",
-                              "column_description":null,
-                              "user_description":"redesign of this col is urgent",
+                              "position":"1",
+                              "db_desc":null,
+                              "user_desc":"redesign of this col is urgent",
                               "insertion_time":"2018-08-30 08:36:04",
                               "last_update":"2018-08-30 08:36:04"
                            },
-                           {  
+                           {
                               "name":"COL3",
-                              "tags":[  
+                              "tags":[
                                  "TAG14",
                                  "TAG45"
                               ],
                               "data_type":"string",
-                              "column_description":null,
-                              "user_description":"redesign of this col is urgent",
+                              "position":"2",
+                              "db_desc":null,
+                              "user_desc":"redesign of this col is urgent",
                               "insertion_time":"2018-08-30 08:36:04",
                               "last_update":"2018-08-30 08:36:04"
                            }
                         ]
                      },
-                     {  
+                     {
                         "name":"TABLE2",
                         "object_type":"table",
-                        "tags":[  
+                        "tags":[
                            "VERIFIED",
                            "CHECKED"
                         ],
-                        "custom_section":[  
-                           {  
+                        "custom_section":[
+                           {
                               "key":"INFO",
                               "value":"Information about table usage"
                            }
                         ],
-                        "table_description":null,
-                        "user_description":"Table is ready",
-                        "steward":{  
+                        "db_desc":null,
+                        "user_desc":"Table is ready",
+                        "steward":{
                            "first_name":"Paul",
                            "last_name":"Johnson",
                            "email":"johson@company.com"
                         },
                         "insertion_time":"2018-08-30 08:36:04",
                         "last_update":"2018-08-30 08:36:04",
-                        "columns":[  
-                           {  
+                        "row_count":"2",
+                        "table_size":"2012",
+                        "columns":[
+                           {
                               "name":"DATA_COL",
-                              "tags":[  
+                              "tags":[
                                  "redesign"
                               ],
                               "data_type":"string",
-                              "column_description":null,
-                              "user_description":"redesign of this col is urgent",
+                              "position":"0",
+                              "db_desc":null,
+                              "user_desc":"redesign of this col is urgent",
                               "insertion_time":"2018-08-30 08:36:04",
                               "last_update":"2018-08-30 08:36:04"
                            }
@@ -1012,71 +1020,117 @@ Download all metadata from Data Glossary.
    }
 }
 
-
-## /api/dg/<glossary_slug>/objects/
-
 ### POST
 
-Submit custom metadata of objects to the data glossary's database identified by a slug. 
-You can edit text description of object, custom section and tags.
-Every not null property will overwrite previous value.
+Submit custom metadata of objects and columns to the data glossary identified by a slug. 
+You can edit text description, custom section, tags, steward, row count and table size.
+Every defined property will overwrite previous value.
 + Request (application/json)
     + Headers
         Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
     + Body
         {
-            "data": [
-                {   "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
-                    "schema": String, // Schema in which the object resides (optional: the default value is "DEFAULT")
-                    "object": String, // A name of the edited object (table/procedure/package)
-                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
-                    "description": String, // Your custom text description of the object
-                    "tags": [
-                    Strings // Tags assigned to the object i.e ["TAG1", "TAG2", ...]
-                    ],
-                    "custom_section": {
-                    "key": String, // The key that you defined in the custom section
-                    "value": String // An arbitrary value that you want to attach to the object
-                    }
-                },
-                ...
+   "slug":"8d05af7b-ba71-4319-82c8-5192bd8144ab",
+   "title":"Demo vizualization",
+   "objects":{
+      "databases":[
+         {
+            "name":"DEMO DATABASE",
+            "schemas":[
+               {
+                  "name":"DEMO SCHEMA",
+                  "tables":[
+                     {
+                        "name":"TABLE1",
+                        "object_type":"table",
+                        "user_desc":"This table need to be redesigned",
+                        "row_count":"24",
+                        "table_size":"4235",
+                        "steward":{
+                           "first_name":"Andrew",
+                           "last_name":"Nowak",
+                           "email":"andre@company.com"
+                        },
+                        "tags":[
+                           "TAG1",
+                           "TAG2"
+                        ],
+                        "custom_section":[
+                           {
+                              "key":"CSKEYX",
+                              "value":"This text is assigned to KEY"
+                           }
+                        ],
+                        "columns":[
+                           {
+                              "name":"COL1",
+                              "user_desc":"These data uses table X",
+                              "tags":[
+                                 "TAG15",
+                                 "CHECKED"
+                              ],
+                           },
+                           {
+                              "name":"COL2",
+                              "user_desc":"redesign of this col is urgent",
+                              "tags":[
+                                 "TAG2"
+                              ],
+                           },
+                           {
+                              "name":"COL3",
+                              "user_desc":"redesign of this col is urgent",
+                              "tags":[
+                                 "TAG14",
+                                 "TAG45"
+                              ],
+                           }
+                        ]
+                     },
+                     {
+                        "name":"TABLE2",
+                        "object_type":"table",
+                        "user_desc":"Table is ready",
+                        "row_count":"2",
+                        "table_size":"2012",
+                        "steward":{
+                           "first_name":"Paul",
+                           "last_name":"Johnson",
+                           "email":"johson@company.com"
+                        },
+                        "tags":[
+                           "VERIFIED",
+                           "CHECKED"
+                        ],
+                        "custom_section":[
+                           {
+                              "key":"INFO",
+                              "value":"Information about table usage"
+                           }
+                        ],
+                        "columns":[
+                           {
+                              "name":"DATA_COL",
+                              "user_desc":"redesign of this col is urgent",
+                              "tags":[
+                                 "redesign"
+                              ],
+                           }
+                        ]
+                     }
+                  ]
+               }
             ]
-        }
+         }
+      ]
+   }
+}
 + Response 200 (application/json)
         {   
-            'rejected_tables': [String], //List of object which were not fount in database thus are unchanged
-            "rejected_cs_keys": [String] // List of keys that were rejected (key or object was missing)
-        }
-        
-## /api/dg/<glossary_slug>/columns/
-
-### POST
-
-Submit custom metadata of columns to the data glossary's database identified by a slug. 
-You can edit text description and tags of column.
-Every not null property will overwrite previous value.
-+ Request (application/json)
-    + Headers
-        Authorization: Token 7f3e205e-34c9-4791-a343-83988b230d0e
-    + Body
-        {
-            "data": [
-                {   "database": String, // Database in which the object resides (optional: the default value is "DEFAULT")
-                    "schema": String, // Schema in which the object resides (optional: the default value is "DEFAULT")
-                    "object": String, // A name of the object in which is edited column (table/procedure/package)
-                    "object_type": String, // One of "T" (as table), "V" (as view), "PROC" (as procedure) and "PKG" (as package)
-                    "column": String, // A name of the edited column
-                    "description": String, // Your custom text description of the column
-                    "tags": [
-                    Strings // Tags assigned to the column i.e ["TAG1", "TAG2", ...]
-                    ]
-                },
-                ...
-            ]
-        }
-+ Response 200 (application/json)
-        {   
-            'rejected_columns': [String] //List of columns which were not fount in database thus are unchanged
+            'rejected_tables': [], //List of object which were not fount in database thus are unchanged
+            'rejected_columns: [], //List of columns which were not fount in database thus are unchanged
+            'rejected_cs_keys': [], // List of keys that were rejected (key or object was missing)
+            
         }
 
 # Group Miscellaneous
