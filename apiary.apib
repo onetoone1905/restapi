@@ -556,16 +556,18 @@ Submit your SQL statements in a zip archive.
 
 + Request (multipart/form-data; boundary=---BOUNDARY)
 
-        -----BOUNDARY
-        Content-Disposition: form-data; name="zip[file]"; filename="zipfilename.zip"
-        Content-Type: application/zip
-        Content-Transfer-Encoding: base64
+    ```
+    -----BOUNDARY
+    Content-Disposition: form-data; name="zip[file]"; filename="zipfilename.zip"
+    Content-Type: application/zip
+    Content-Transfer-Encoding: base64
 
-        UEsDBAoAAAAAACFhZk37F63BEAAAABAAAAAIABwAdGVzdC5zcWxVVAkAA0124V
-        tNduFbdXgLAAEE6AMAAAToAwAAc2VsZWN0IGEgZnJvbSBiClBLAQIeAwoAAAAA
-        ACFhZk37F63BEAAAABAAAAAIABgAAAAAAAEAAAC0gQAAAAB0ZXN0LnNxbFVUBQ
-        ADTXbhW3V4CwABBOgDAAAE6AMAAFBLBQYAAAAAAQABAE4AAABSAAAAAAA=
-        -----BOUNDARY
+    UEsDBAoAAAAAACFhZk37F63BEAAAABAAAAAIABwAdGVzdC5zcWxVVAkAA0124V
+    tNduFbdXgLAAEE6AMAAAToAwAAc2VsZWN0IGEgZnJvbSBiClBLAQIeAwoAAAAA
+    ACFhZk37F63BEAAAABAAAAAIABgAAAAAAAEAAAC0gQAAAAB0ZXN0LnNxbFVUBQ
+    ADTXbhW3V4CwABBOgDAAAE6AMAAFBLBQYAAAAAAQABAE4AAABSAAAAAAA=
+    -----BOUNDARY
+    ```
 
     + Headers
 
